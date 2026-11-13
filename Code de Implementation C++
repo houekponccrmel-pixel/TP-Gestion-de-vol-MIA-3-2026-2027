@@ -1,0 +1,25 @@
+
+#include <iostream>
+
+class Reservation {
+private:
+    int id;
+    int idPassager;
+    int idVol;
+    bool payee;
+
+public:
+    Reservation(int nouvelId, int passager, int vol)
+        : id(nouvelId), idPassager(passager), idVol(vol), payee(false) {}
+
+    void payer() {
+        payee = true;
+    }
+
+    void afficher() const {
+        std::cout << "Reservation " << id
+                  << " - Passager: " << idPassager
+                  << " - Vol: " << idVol
+                  << " - Payee: " << (payee ? "Oui" : "Non")
+                  << std::endl;
+    }
