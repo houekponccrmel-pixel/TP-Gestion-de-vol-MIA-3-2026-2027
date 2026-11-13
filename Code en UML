@@ -1,0 +1,118 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+skinparam monochrome true
+
+class Passager {
+    - id : int
+    - nom : string
+    - prenom : string
+    - telephone : string
+    - email : string
+
+    + Passager(...)
+    + getId() : int
+    + getNomComplet() : string
+    + getEmail() : string
+    + afficher() : void
+}
+
+class Vol {
+    - id : int
+    - numero : string
+    - depart : string
+    - destination : string
+    - date : string
+    - capacite : int
+
+    + Vol(...)
+    + getId() : int
+    + getNumero() : string
+    + getCapacite() : int
+    + afficher() : void
+}
+
+class Reservation {
+    - id : int
+    - idPassager : int
+    - idVol : int
+    - nombrePlaces : int
+    - montant : double
+    - etat : EtatReservation
+
+    + Reservation(...)
+    + getId() : int
+    + getIdPassager() : int
+    + getIdVol() : int
+    + getNombrePlaces() : int
+    + getMontant() : double
+    + getEtat() : EtatReservation
+    + valider() : void
+    + annuler() : void
+    + afficher() : void
+}
+
+class Paiement {
+    - id : int
+    - montant : double
+    - date : string
+    - moyen : string
+
+    + Paiement(...)
+    + getId() : int
+    + getMontant() : double
+    + enregistrer() : void
+    + afficher() : void
+}
+
+class AgenceVoyage {
+    - passagers : vector
+    - vols : vector
+    - reservations : vector
+    - prochainPassager : int
+    - prochainVol : int
+    - prochaineReservation : int
+
+    + enregistrerPassager() : void
+    + ajouterVol() : void
+    + afficherPassagers() : void
+    + afficherVols() : void
+    + effectuerReservation() : void
+    + enregistrerPaiement() : void
+    + annulerReservation() : void
+    + afficherReservations() : void
+    + afficherInformationReservation() : void
+    + menu() : void
+}
+
+enum EtatReservation {
+    EN_ATTENTE
+    VALIDEE
+    ANNULEE
+}
+
+AgenceVoyage "1" o-- "0..*" Passager : gere
+AgenceVoyage "1" o-- "0..*" Vol : gere
+AgenceVoyage "1" o-- "0..*" Reservation : gere
+Passager "1" -- "0..*" Reservation : effectue
+Vol "1" -- "0..*" Reservation : concerne
+Reservation "1" -- "0..1" Paiement : reglee_par
+Reservation --> EtatReservation : possede
+
+note right of Reservation
+Une reservation concerne un seul passager
+et un seul vol.
+
+Un passager ne peut pas reserver deux fois
+le meme vol.
+
+Une reservation annulee ne peut plus etre
+payee ni reutilisee.
+end note
+
+note bottom of Vol
+La somme des places reservees ne doit pas
+depasser la capacite du vol.
+end note
+
+
